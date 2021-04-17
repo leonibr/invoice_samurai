@@ -1,0 +1,15 @@
+version: '2'
+services:
+  nota_poc:
+    restart: always
+    build: 
+      context: .
+      target: nota_poc
+    ports:
+     - "5087:80"
+    environment:
+      ASPNETCORE_URLS: "http://+:80"
+      ASPNETCORE_ENVIRONMENT: "Production"
+
+
+

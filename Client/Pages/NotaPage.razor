@@ -1,0 +1,152 @@
+﻿@page "/nota"
+@layout NotaLayout
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@NotaHeader</h3>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-4">
+        <div class="form-group">
+            <label>Nome</label>
+            <input type="text" class="form-control" @bind="@Cliente.Nome" @bind:event="oninput" />
+        </div>
+        <div class="form-group">
+            <label>Endereço</label>
+            <input type="text" class="form-control" @bind="@Cliente.Endereco" @bind:event="oninput" />
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label>Bairro</label>
+                    <input type="text" class="form-control" @bind="@Cliente.Bairro" @bind:event="oninput" />
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label>Cidade</label>
+                    <input type="text" class="form-control" @bind="@Cliente.Cidade" @bind:event="oninput" />
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="col-sm-12 col-md-8">
+        <div class="row">
+            <div class="form-group">
+                <label>Data de Nascimento</label>
+                <input type="date" @bind="@Cliente.DataNascimento" class="form-control" @bind:event="oninput" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-6">
+                <label>Empresa</label>
+                <input type="text" @bind="Nota.NomeEmpresa" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-4">
+                <label>Número</label>
+                <input type="number" @bind="Nota.Numero" class="form-control" @bind:event="oninput" />
+            </div>
+            <div class="form-group col-8">
+                <label>CNPJ</label>
+                <input type="text" @bind="Nota.Cnpj" class="form-control" @bind:event="oninput" />
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <h4>Itens da Nota</h4>
+        <div class="table-responsive">
+            <table class="table table-sm table-striped">
+                <tr>
+                    <th style="width:80px">#</th>
+                    <th style="width:80px">Cód.</th>
+                    <th>Descrição</th>
+                    <th style="width:80px">Qtd.</th>
+                    <th style="width:120px">
+                        Valor Un.
+                    </th>
+                    <th style="width:120px">Total</th>
+                    <th style="width:60px;"></th>
+                </tr>
+                @foreach (var item in Nota.ItensNota)
+                {
+                    <tr>
+                        <td>@($"{item.ItemOrdem:00}")</td>
+                        <td>
+                            <input type="text" @bind="item.Codigo" @bind:event="oninput" class="form-control form-control-sm" />
+                        </td>
+                        <td>
+                            <input type="text" @bind="item.Descricao" @bind:event="oninput" class="form-control form-control-sm" />
+                        </td>
+                        <td>
+                            <input type="number" @bind="item.Qtd" @bind:event="oninput" class="form-control form-control-sm" />
+                        </td>
+                        <td>
+                            <input type="number" @bind="item.ValorUnidade" @bind:event="oninput" class="form-control form-control-sm" />
+                        </td>
+                        <td class="text-nowrap text-right">@item.TotalFormatado</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" @onclick="(() => item.DeveExcluir())">
+                                <i class="oi oi-trash"></i>
+
+                            </button>
+                        </td>
+                    </tr>
+                }
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <button class="btn btn-primary" @onclick="(() => Nota.AddItemNota())">
+                                <i class="oi oi-plus"></i> Novo Item
+                            </button>
+                        </td>
+                        <td colspan="1" class="text-nowrap text-right" style="font-weight:bold; border-top:1px solid black;">
+                            @Nota.ValorNotaFormatado
+                        </td>
+                    </tr>
+                </tfoot>
+
+
+            </table>
+        </div>
+    </div>
+    <div class="col-sm-6" style="min-height:550px">
+
+
+        @{ ProcessaNota();}
+        @if (PdfBody.IsNullOrEmpty())
+        {
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Gerando pdf</span>
+                </div>
+                <div class="h3 ml-2">Gerando pdf...</div>
+            </div>
+
+        }
+        else
+        {
+
+            <iframe width='100%' height='100%' src='data:application/pdf;base64,@PdfBody'></iframe>
+        }
+    </div>
+</div>
+
+
+@code {
+
+}
