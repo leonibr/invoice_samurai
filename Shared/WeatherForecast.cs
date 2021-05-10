@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace NotaFiscalPoc.Shared
+namespace InvoiceSamurai.Shared
 {
     public class WeatherForecast
     {

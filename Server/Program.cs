@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace NotaFiscalPoc.Server
+namespace InvoiceSamurai.Server
 {
     public class Program
     {

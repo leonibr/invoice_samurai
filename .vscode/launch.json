@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Server/bin/Debug/net5.0/NotaFiscalPoc.Server.dll",
+            "program": "${workspaceFolder}/Server/bin/Debug/net5.0/InvoiceSamurai.Server.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

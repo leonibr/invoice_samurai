@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NotaFiscalPoc.Shared;
+using InvoiceSamurai.Shared;
 
-namespace NotaFiscalPoc.Server.Controllers
+namespace InvoiceSamurai.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]

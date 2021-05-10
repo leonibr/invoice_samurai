@@ -1,10 +1,10 @@
 version: '2'
 services:
-  nota_poc:
+  invoice_samurai:
     restart: always
     build: 
       context: .
-      target: nota_poc
+      target: invoice_samurai
     ports:
      - "5087:80"
     environment:

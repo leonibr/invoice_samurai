@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 
-namespace NotaFiscalPoc.Server
+namespace InvoiceSamurai.Server
 {
     public class Startup
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NotaFiscalPoc.Client.Config
+namespace InvoiceSamurai.Client.Config
 {
     public static class AppExtensions
     {
