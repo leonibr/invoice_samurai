@@ -11,7 +11,7 @@
 - Pdf generation on Browser - prevent user to leave the form and the page to see the result,this way we end up having a faster loop interaction while building a report/an invoice.
 
 ## It uses
-- Blazor, Bootstrap 5
+- Blazor, Bootstrap 5 (Bootswatch awesome theme)
 
 ## License
 - MIT
