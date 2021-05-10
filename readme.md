@@ -3,7 +3,7 @@
 ### Sample showcase Blazor dynamic update features and dynamic pdf generation on webassembly
 ## See it [online](https://invoicesamurai.marques.top)
 
-![Invoice Samurai](invoiceSamurai.gif)
+![Invoice Samurai](invoicesamurai.gif)
 
 
 ## Objective
