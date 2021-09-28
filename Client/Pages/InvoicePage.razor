@@ -3,7 +3,7 @@
 
 <div class="row">
     <div class="col-sm-6">
-        <h3>@NotaHeader</h3>
+        <h3>@InvoiceHeader</h3>
         <p>Change the invoice fields and itens to immediatly update de generated pdf</p>
     </div>
     <div class="col-sm-6">
@@ -85,17 +85,17 @@
         <div class="row">
             <div class="form-group col-6  mb-3">
                 <label class="form-label">Company Name</label>
-                <input type="text" @bind="Nota.CompanyName" class="form-control" @bind:event="@UpdateOnText" />
+                <input type="text" @bind="Invoice.CompanyName" class="form-control" @bind:event="@UpdateOnText" />
             </div>
         </div>
         <div class="row">
             <div class="form-group col-4  mb-3">
                 <label class="form-label">Invoice Number</label>
-                <input type="number" @bind="Nota.Number" class="form-control" @bind:event="@UpdateOnText" />
+                <input type="number" @bind="Invoice.Number" class="form-control" @bind:event="@UpdateOnText" />
             </div>
             <div class="form-group col-8  mb-3">
                 <label class="form-label">Business Registration Number</label>
-                <input type="text" @bind="Nota.BusinessRegistrationNumber" class="form-control"
+                <input type="text" @bind="Invoice.BusinessRegistrationNumber" class="form-control"
                     @bind:event="@UpdateOnText" />
             </div>
 
@@ -123,7 +123,7 @@
                     <th style="width:120px">Total</th>
                     <th style="width:60px;"></th>
                 </tr>
-                @foreach (var item in Nota.Itens)
+                @foreach (var item in Invoice.Itens)
                 {
                     <tr>
                         <td>@($"{item.ItemOrdem:00}")</td>
@@ -145,7 +145,7 @@
                         </td>
                         <td class="text-nowrap text-right">@item.FormattedTotal</td>
                         <td>
-                            <button class="btn btn-sm btn-danger" @onclick="(() => item.DeveExcluir())">
+                            <button class="btn btn-sm btn-danger" @onclick="(() => item.ShouldDelete())">
                                 <i class="oi oi-trash"></i>
 
                             </button>
@@ -155,13 +155,13 @@
                 <tfoot>
                     <tr>
                         <td colspan="5">
-                            <button class="btn btn-primary" @onclick="(() => Nota.AddInvoiceItem())">
+                            <button class="btn btn-primary" @onclick="(() => Invoice.AddInvoiceItem())">
                                 <i class="oi oi-plus"></i> Add Item
                             </button>
                         </td>
                         <td colspan="1" class="text-nowrap text-right"
                             style="font-weight:bold; border-top:1px solid black;">
-                            @Nota.FormattedPrice
+                            @Invoice.FormattedPrice
                         </td>
                     </tr>
                 </tfoot>
@@ -173,23 +173,20 @@
     <div class="col-sm-6" style="min-height:550px">
         <h4>Invoice</h4>
 
-        @{
-            RenderPdf();}
-        @if (PdfBody.IsNullOrEmpty())
+        @{ RenderPdf();}
+        @* @if (PdfBody.IsNullOrEmpty())
         {
-            <div class="d-flex justify-content-center mt-3" style="width: 100%;height: 100%;">
+            <div class="d-flex justify-content-center mt-3" style="width: 100%;">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Rendering pdf</span>
                 </div>
                 <div class="h3 ml-2">Rendering pdf...</div>
             </div>
 
-        }
-        else
-        {
-
-            <iframe width='100%' height='100%' src='data:application/pdf;base64,@PdfBody'></iframe>
-        }
+        }        
+        <p>No delete</p> *@
+           <iframe width='100%' height='100%' src='data:application/pdf;base64,@PdfBody'></iframe>
+           
     </div>
 </div>
 

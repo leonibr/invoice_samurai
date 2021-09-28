@@ -13,17 +13,17 @@ namespace InvoiceSamurai.Shared
         public InvoiceModel()
         {
             Itens = new ObservableCollection<InvoiceItem>();
-            Itens.CollectionChanged += ItensNota_CollectionChanged;
+            Itens.CollectionChanged += InvoiceItens_CollectionChanged;
             AddInvoiceItem();
         }
 
-        private void ItemNota_HasChanged(object sender, bool e)
+        private void InvoiceItem_HasChanged(object sender, bool e)
         {
             UpdateHash();
         }
 
         
-        private void ItensNota_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void InvoiceItens_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             UpdateHash();
         }
@@ -40,7 +40,7 @@ namespace InvoiceSamurai.Shared
                 return;
             }
             item.OnShouldDelete -= InvoiceItem_OnShouldDelete;
-            item.HasChanged -= ItemNota_HasChanged;
+            item.HasChanged -= InvoiceItem_HasChanged;
             Itens.Remove(item);
             int i = 0;
             foreach (var itn in Itens)
@@ -55,7 +55,7 @@ namespace InvoiceSamurai.Shared
                 ItemOrdem = Itens.Count + 1
             };
             item.OnShouldDelete += InvoiceItem_OnShouldDelete;
-            item.HasChanged += ItemNota_HasChanged;
+            item.HasChanged += InvoiceItem_HasChanged;
             Itens.Add(item);
 
         }

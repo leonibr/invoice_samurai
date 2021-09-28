@@ -41,7 +41,7 @@ namespace InvoiceSamurai.Client.Pages
         protected override void OnInitialized()
         {
             Observable.FromEventPattern<int>(h => RaiseNewHashCode += h, h => RaiseNewHashCode -= h)
-                .Throttle(TimeSpan.FromMilliseconds(600))
+                //.Throttle(TimeSpan.FromMilliseconds(600))
                 .Select( async (c) => new { response = await httpClient.PostAsJsonAsync("/pdfinvoice", pdfCommand) } )
                     .Concat()
                  .Where(c => c.response.StatusCode == System.Net.HttpStatusCode.Created)
@@ -60,32 +60,32 @@ namespace InvoiceSamurai.Client.Pages
             StateHasChanged();
         }
 
-        string NotaHeader => Customer.IsNull() ? "Invoice" : $"Invoice for {Customer?.Name}";
+        string InvoiceHeader => Customer.IsNull() ? "Invoice" : $"Invoice for {Customer?.Name}";
 
-        protected InvoiceModel Nota { get; set; } = new();
+        protected InvoiceModel Invoice { get; set; } = new();
 
         protected CustomerModel Customer = new CustomerModel();
 
         protected string PdfBody = string.Empty;
         protected GeneratePdfCommand pdfCommand = new GeneratePdfCommand();
 
-        int commandAnterior = -1;
-        protected async Task RenderPdf()
+        int previousCommand = -1;
+        protected void RenderPdf()
         {
 
 
 
             pdfCommand = pdfCommand with
             {
-                Invoice = Nota,
+                Invoice = Invoice,
                 Customer = Customer
             };
-            if (pdfCommand.GetHashCode() == commandAnterior)
+            if (pdfCommand.GetHashCode() == previousCommand)
             {
                 return;
             }
-            commandAnterior = pdfCommand.GetHashCode();
-            RaiseNewHashCode?.Invoke(this, commandAnterior);
+            previousCommand = pdfCommand.GetHashCode();
+            RaiseNewHashCode?.Invoke(this, previousCommand);
             
             PdfBody = string.Empty;
 

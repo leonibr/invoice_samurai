@@ -59,7 +59,7 @@ namespace InvoiceSamurai.Shared
 
 
         private void HasHangedField() => HasChanged?.Invoke(this, true);
-        public void DeveExcluir() =>OnShouldDelete?.Invoke(this, true);
+        public void ShouldDelete() =>OnShouldDelete?.Invoke(this, true);
 
 
     }
