@@ -16,6 +16,10 @@
 ## License
 - MIT
 
+## Changes
+    - Added support to PDF.js instead of rendering on IFrame. see demo.
+    
+
 ### Roadmap
 - send the binary data throught websockts (Signalr) instead http response.
 
