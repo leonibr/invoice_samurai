@@ -14,9 +14,10 @@ using System.Reactive.Linq;
 using System.Reactive.Disposables;
 using System.Threading;
 using System.Reactive.Threading.Tasks;
+using Microsoft.JSInterop;
 
 namespace InvoiceSamurai.Client.Pages
-{ 
+{
 
     public partial class InvoicePage : ComponentBase
     {
@@ -24,7 +25,7 @@ namespace InvoiceSamurai.Client.Pages
         {
             Keystroke,
             LostFocus
-        }   
+        }
         protected event EventHandler<int> RaiseNewHashCode;
 
         protected UpdateFieldOn TextFieldInput { get; set; } = UpdateFieldOn.Keystroke; // defualt
@@ -35,28 +36,33 @@ namespace InvoiceSamurai.Client.Pages
             TextFieldInput = newValue;
         }
 
-        [Inject]
-        HttpClient httpClient { get; set; }
+        [Inject] HttpClient httpClient { get; set; }
+        [Inject] IJSRuntime JSRuntime { get; set; }
 
         protected override void OnInitialized()
         {
             Observable.FromEventPattern<int>(h => RaiseNewHashCode += h, h => RaiseNewHashCode -= h)
-                //.Throttle(TimeSpan.FromMilliseconds(600))
-                .Select( async (c) => new { response = await httpClient.PostAsJsonAsync("/pdfinvoice", pdfCommand) } )
+                .Throttle(TimeSpan.FromMilliseconds(600))
+                .Select(async (c) => new { response = await httpClient.PostAsJsonAsync("/pdfinvoice", pdfCommand) })
                     .Concat()
                  .Where(c => c.response.StatusCode == System.Net.HttpStatusCode.Created)
-                 .Select(async (c) => new { content = await c.response.Content.ReadAsStringAsync() })
+                 .Select(async (c) => new { content = await c.response.Content.ReadAsByteArrayAsync() })
                  .Concat()
                  .Select(c => c.content)
                 .Subscribe(HandleIncomingPdf);
 
 
-
         }
 
-        private void HandleIncomingPdf(string pdfBody)
+        protected override void OnAfterRender(bool firstRender)
+        {
+            base.OnAfterRender(firstRender);
+        }
+        private void HandleIncomingPdf(byte[] pdfBody)
         {
             PdfBody = pdfBody;
+            Console.WriteLine("array");
+             _ = JSRuntime.InvokeVoidAsync("generatePdf",  pdfBody );
             StateHasChanged();
         }
 
@@ -66,15 +72,12 @@ namespace InvoiceSamurai.Client.Pages
 
         protected CustomerModel Customer = new CustomerModel();
 
-        protected string PdfBody = string.Empty;
+        protected byte[] PdfBody = Array.Empty<byte>();
         protected GeneratePdfCommand pdfCommand = new GeneratePdfCommand();
 
         int previousCommand = -1;
         protected void RenderPdf()
         {
-
-
-
             pdfCommand = pdfCommand with
             {
                 Invoice = Invoice,
@@ -86,13 +89,14 @@ namespace InvoiceSamurai.Client.Pages
             }
             previousCommand = pdfCommand.GetHashCode();
             RaiseNewHashCode?.Invoke(this, previousCommand);
-            
-            PdfBody = string.Empty;
+
+            PdfBody = Array.Empty<byte>();
+             _ = JSRuntime?.InvokeVoidAsync("window.clearCanvas");
 
 
         }
 
-      
+
 
     }
 

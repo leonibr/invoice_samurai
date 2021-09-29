@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using InvoiceSamurai.Shared;
+using System.Net;
 
 namespace InvoiceSamurai.Server.Controllers
 {
@@ -20,7 +21,7 @@ namespace InvoiceSamurai.Server.Controllers
         private readonly static string _lopsem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dictum felis ut turpis viverra, a ultrices nisi tempor. Aliquam suscipit dui sit amet facilisis aliquam. In scelerisque sem ut elit molestie tempor. In finibus sagittis nulla, vitae vestibulum ante tristique sit amet. Phasellus facilisis rhoncus nunc id scelerisque. Praesent cursus erat nec turpis interdum condimentum. Aenean ut facilisis eros. Nam semper tincidunt libero in porttitor. Praesent nec dui vitae leo vulputate varius ut non risus. Quisque imperdiet euismod ipsum facilisis finibus. Duis ac felis eget leo malesuada gravida id at felis. Cras posuere, tortor sit amet bibendum tincidunt, augue lectus pulvinar nisl, ac blandit velit arcu sed nulla. Mauris id venenatis turpis, ut fringilla nunc. Aenean commodo fermentum nulla, non porta sapien viverra sed. Sed sed risus interdum, maximus sapien ac, bibendum diam.";
 
 
-  
+
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IWebHostEnvironment env;
 
@@ -32,12 +33,12 @@ namespace InvoiceSamurai.Server.Controllers
 
 
         [HttpPost("")]
-        public ActionResult<string> GeraPdf([FromBody] GeneratePdfCommand command, 
-        
+        public FileResult GeraPdf([FromBody] GeneratePdfCommand command,
+
                     CancellationToken cancellationToken)
         {
             InvoiceModel invoice = command.Invoice;
-            CustomerModel customer = command.Customer ;
+            CustomerModel customer = command.Customer;
             var fontPath = Path.Combine(env.ContentRootPath, "Fonts", "LibreBarcode39Extended-Regular.ttf");
             BaseFont codigobarraFonte = BaseFont.CreateFont(fontPath, BaseFont.CP1252, BaseFont.EMBEDDED);
 
@@ -66,7 +67,7 @@ namespace InvoiceSamurai.Server.Controllers
 
             PdfWriter writer = PdfWriter.GetInstance(pdf, memoryStream);
 
-      
+
             var fontStyle = FontFactory.GetFont("Arial", 12, BaseColor.White);
             var labelHeader = new Chunk($"Invoice Number {invoice.Number}", fontStyle);
             HeaderFooter header = new HeaderFooter(new Phrase(labelHeader), false)
@@ -106,17 +107,17 @@ namespace InvoiceSamurai.Server.Controllers
             pdf.Add(address);
 
             var table = new Paragraph("List of Itens:", new Font(Font.HELVETICA, 10, Font.BOLD));
-            pdf.Add(table);           
+            pdf.Add(table);
 
             Table datatable = new Table(6);
-          
+
             datatable.Width = 100;
             datatable.Padding = 2;
             datatable.Spacing = 0;
             datatable.BorderColor = new BaseColor(48, 17, 94);
 
 
-            float[] headerwidths = { 5, 5, 32, 6, 6, 7};
+            float[] headerwidths = { 5, 5, 32, 6, 6, 7 };
             var fontHeader = new Font(Font.HELVETICA, 11, Font.BOLD);
             var fontBody = new Font(Font.HELVETICA, 9);
             datatable.Widths = headerwidths;
@@ -156,7 +157,7 @@ namespace InvoiceSamurai.Server.Controllers
             p.SpacingBefore = 20f;
             p.SetAlignment("RIGHT");
 
-         
+
 
             Font font = new Font(codigobarraFonte, 42);
             StringBuilder sb = new StringBuilder();
@@ -192,8 +193,8 @@ namespace InvoiceSamurai.Server.Controllers
 
             pdf.Add(columns);
             pdf.Close();
-
-            return Created("", Convert.ToBase64String(memoryStream.ToArray()));
+           Response.StatusCode = (int)HttpStatusCode.Created;
+            return File(memoryStream.ToArray(), "application/pdf");
         }
 
     }
