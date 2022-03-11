@@ -41,51 +41,6 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.9.359/build/pdf.min.js" integrity="sha256-hEmjt7z3bB53X/awJyV81gmBLpVw2mj7EsvoJelZWow=" crossorigin="anonymous"></script>
-    <script id="script">
-       pdfjsLib.GlobalWorkerOptions.workerSrc =
-         "https://cdn.jsdelivr.net/npm/pdfjs-dist@2.9.359/build/pdf.worker.min.js";
-
-      window.clearCanvas = function() {
-        var canvas = document.getElementById("pdf-canvas");
-        var context = canvas.getContext("2d");
-        context.clearRect(0, 0, canvas.width, canvas.height)
-      }
-
-      window.generatePdf = function (pdfData) {
-        var binary = atob(pdfData);
-        console.log('pdfData', typeof(pdfData))
-        var loadingTask = pdfjsLib.getDocument({data: binary});
-        loadingTask.promise.then(function (pdf) {
-            console.log('pdf loaded')
-          pdf.getPage(1).then(function (page) {
-            console.log('page loaded')
-            var scale = 0.85;
-            var viewport = page.getViewport({ scale: scale });
-            var outputScale = window.devicePixelRatio || 1;
-            var canvas = document.getElementById("pdf-canvas");
-            var context = canvas.getContext("2d");
-
-            canvas.width = Math.floor(viewport.width * outputScale);
-            canvas.height = Math.floor(viewport.height * outputScale);
-            canvas.style.width = Math.floor(viewport.width) + "px";
-            canvas.style.height = Math.floor(viewport.height) + "px";
-
-            var transform =
-              outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
-
-            var renderContext = {
-              canvasContext: context,
-              transform: transform,
-              viewport: viewport,
-            };
-            var renderTask =  page.render(renderContext);
-
-            renderTask.promise.then(function() {
-                console.log('page rendered')
-            });
-          });
-        });
-      };
-    </script>
+    <script src="script/renderer.js" defer></script>
   </body>
 </html>
