@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine as build
 WORKDIR /build-dir
 ADD Client/InvoiceSamurai.Client.csproj Client/InvoiceSamurai.Client.csproj
 ADD Server/InvoiceSamurai.Server.csproj Server/InvoiceSamurai.Server.csproj
@@ -13,10 +13,10 @@ RUN dotnet build -c:Release
 
 FROM build as publish
 WORKDIR /build-dir
-RUN dotnet publish -c:Release -f:net5.0 --no-build --no-restore Server/InvoiceSamurai.Server.csproj -o /build-dir/publish
+RUN dotnet publish -c:Release -f:net6.0 --no-build --no-restore Server/InvoiceSamurai.Server.csproj -o /build-dir/publish
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine as runtime
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine as runtime
 RUN apk add icu-libs libx11-dev
 RUN apk add libgdiplus-dev \
   --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
