@@ -5,11 +5,12 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reactive.Linq;
 using InvoiceSamurai.Client.Config;
+using InvoiceSamurai.Client.Documents;
 using InvoiceSamurai.Client.Shared;
 using InvoiceSamurai.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-
+using QuestPDF.Fluent;
 namespace InvoiceSamurai.Client.Pages.InvoiceWasm;
 
 [Route("/invoice-wasm")]
@@ -35,17 +36,6 @@ public partial class Index : ComponentBase
     string InvoiceHeader => Customer.IsNull() ? "Invoice" : $"Invoice for {Customer?.Name}";
     protected override void OnInitialized()
     {
-        object p = Observable.FromEventPattern<int>(h => RaiseNewHashCode += h, h => RaiseNewHashCode -= h)
-            .Throttle(TimeSpan.FromMilliseconds(600))
-            .Select(async (c) => new { response = await httpClient.PostAsJsonAsync("/pdfinvoice", pdfCommand) })
-                .Concat()
-             .Where(c => c.response.StatusCode == System.Net.HttpStatusCode.Created)
-             .Select(async (c) => new { content = await c.response.Content.ReadAsByteArrayAsync() })
-             .Concat()
-             .Select(c => c.content)
-            .Subscribe(HandleIncomingPdf);
-
-
     }
     protected void SetUpdateSettings(UpdateFieldOn newValue)
     {
@@ -55,7 +45,7 @@ public partial class Index : ComponentBase
 
     private void HandleIncomingPdf(byte[] pdfBody)
     {
-        PdfBody = pdfBody;    
+        PdfBody = pdfBody;
         JSRuntime.InvokeVoidAsync("PdfRenderer.renderPdf", pdfBody);
         StateHasChanged();
     }
@@ -79,7 +69,9 @@ public partial class Index : ComponentBase
         RaiseNewHashCode?.Invoke(this, previousCommand);
 
         PdfBody = Array.Empty<byte>();
-        _ = JSRuntime?.InvokeVoidAsync("PdfRenderer.clearCanvas");
+        // JSRuntime?.InvokeVoidAsync("PdfRenderer.clearCanvas");
+        var document = new InvoiceDocument(pdfCommand);
+        HandleIncomingPdf(document.GeneratePdf());
 
 
     }
