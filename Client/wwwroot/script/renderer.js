@@ -23,7 +23,7 @@ PdfRenderer.renderPdf = function (pdfData) {
         console.log(`pdf loaded at ${Timer.partial(start)}`)
         pdf.getPage(1).then(function (page) {
             console.log(`page loaded at ${Timer.partial(start)}`)
-            var scale = 0.85;
+            var scale = 0.95;
             var viewport = page.getViewport({ scale: scale });
             var outputScale = window.devicePixelRatio || 1;
             var canvas = document.getElementById("pdf-canvas");

@@ -1,9 +1,11 @@
 
 
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reactive.Linq;
+using System.Reflection;
 using InvoiceSamurai.Client.Config;
 using InvoiceSamurai.Client.Documents;
 using InvoiceSamurai.Client.Shared;
@@ -36,6 +38,7 @@ public partial class Index : ComponentBase
     string InvoiceHeader => Customer.IsNull() ? "Invoice" : $"Invoice for {Customer?.Name}";
     protected override void OnInitialized()
     {
+
     }
     protected void SetUpdateSettings(UpdateFieldOn newValue)
     {

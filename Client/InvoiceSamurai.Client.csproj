@@ -4,6 +4,16 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
+ 
+
+  <ItemGroup>
+    <EmbeddedResource Include="LibreBarcode39Extended-Regular.ttf" />
+    <EmbeddedResource Include="Roboto-Regular.ttf" />
+  </ItemGroup>
+
+
+
+ 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" PrivateAssets="all" />

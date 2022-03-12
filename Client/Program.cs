@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Reflection;
+using System.IO;
+using QuestPDF.Drawing;
+using InvoiceSamurai.Client.Documents;
 
 namespace InvoiceSamurai.Client
 {
@@ -18,6 +22,17 @@ namespace InvoiceSamurai.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+            using (Stream streamBarcode = Assembly
+                                    .GetExecutingAssembly()
+                                    .GetManifestResourceStream(AppFonts.LibreBarcode39Resourcename))
+            using (Stream streamRoboto = Assembly
+                                    .GetExecutingAssembly()
+                                    .GetManifestResourceStream(AppFonts.RobotoResourcename))
+            {
+                FontManager.RegisterFontType(AppFonts.LibreBarcode39, streamBarcode);
+                FontManager.RegisterFontType(AppFonts.Roboto, streamRoboto);
+            }
 
             await builder.Build().RunAsync();
         }
