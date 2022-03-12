@@ -1,5 +1,7 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal as build
 WORKDIR /build-dir
+RUN apt update && apt install -y python3
+RUN dotnet workload install wasm-tools
 ADD Client/InvoiceSamurai.Client.csproj Client/InvoiceSamurai.Client.csproj
 ADD Server/InvoiceSamurai.Server.csproj Server/InvoiceSamurai.Server.csproj
 ADD Shared/InvoiceSamurai.Shared.csproj Shared/InvoiceSamurai.Shared.csproj
