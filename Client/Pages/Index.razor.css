@@ -1,0 +1,22 @@
+.col-6 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    filter: opacity(25%); /* blur(2px);*/
+    transition: all .3s ease-out;
+}
+
+.card:hover {
+    filter: none;
+    cursor: pointer;
+    
+}
+
+.card:hover .card-body,
+.card:hover .card-title,
+.card:hover .card-text {
+    text-shadow:4px 5px 3px #7b56ed;
+}

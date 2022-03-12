@@ -7,6 +7,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" PrivateAssets="all" />
+    <PackageReference Include="QuestPDF" Version="2022.2.6" />
+    <PackageReference Include="SkiaSharp.Views.Blazor" Version="2.88.0-preview.209" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
     
@@ -15,5 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Shared\InvoiceSamurai.Shared.csproj" />
   </ItemGroup>
+
 
 </Project>

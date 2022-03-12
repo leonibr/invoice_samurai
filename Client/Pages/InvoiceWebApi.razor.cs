@@ -2,23 +2,15 @@
 using InvoiceSamurai.Client.Config;
 using InvoiceSamurai.Shared;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Reactive;
 using System.Reactive.Linq;
-using System.Reactive.Disposables;
-using System.Threading;
-using System.Reactive.Threading.Tasks;
 using Microsoft.JSInterop;
 
 namespace InvoiceSamurai.Client.Pages;
 
-public partial class InvoicePage : ComponentBase
+public partial class InvoiceWebApi : ComponentBase
 {
 
     [Inject] HttpClient httpClient { get; set; }
