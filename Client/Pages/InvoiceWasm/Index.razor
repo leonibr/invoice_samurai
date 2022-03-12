@@ -1,1 +1,192 @@
-<h3>Invoice Wasm page</h3>
+
+<div class="row">
+    <div class="col-sm-6 d-flex">
+        <img src="/images/WebAssembly_Logo.svg" style="max-height:120px" alt="WebAssembly logo">
+        <div class="ms-4">
+
+        <h3>@InvoiceHeader</h3>
+        <p>Change the invoice fields and itens to immediatly update de generated pdf</p>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <h5>Change PDF Update Settings</h5>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked
+                @onclick="@(() => SetUpdateSettings(UpdateFieldOn.Keystroke))">
+            <label class="form-check-label" for="flexRadioDefault1">
+                Update on every keystroke inside textfields
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                @onclick="@(() => SetUpdateSettings(UpdateFieldOn.LostFocus))">
+            <label class="form-check-label" for="flexRadioDefault2">
+                Update on textfields lost focus (onchange)
+            </label>
+        </div>
+        @*<div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" @bind="TextFieldInput">
+            <label class="form-check-label" for="flexSwitchCheckDefault">@(TextFieldInput ? "Update on textfield input" :
+            "Update on textfield lost focus")</label>
+            </div>
+            <small class="text-muted">@(TextFieldInput ? "Update on textfield input" : "Update on textfield lost
+            focus")</small>*@
+    </div>
+    <hr />
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" @bind="@Customer.Name" @bind:event="@UpdateOnText" />
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label">Address</label>
+            <input type="text" class="form-control" @bind="@Customer.Address" @bind:event="@UpdateOnText" />
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mb-3">
+                    <label class="form-label">Neighborhood</label>
+                    <input type="text" class="form-control" @bind="@Customer.Neigborhood" @bind:event="@UpdateOnText" />
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group mb-3">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-control" @bind="@Customer.City"
+                                @bind:event="@UpdateOnText" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group mb-3">
+                            <label class="form-label">State</label>
+                            <input type="text" class="form-control" @bind="@Customer.State"
+                                @bind:event="@UpdateOnText" />
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="row">
+            <div class="form-group  mb-3">
+                <label class="form-label">Date of birth</label>
+                <input type="date" @bind="@Customer.Dob" class="form-control" @bind:event="@UpdateOnText" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-6  mb-3">
+                <label class="form-label">Company Name</label>
+                <input type="text" @bind="Invoice.CompanyName" class="form-control" @bind:event="@UpdateOnText" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-4  mb-3">
+                <label class="form-label">Invoice Number</label>
+                <input type="number" @bind="Invoice.Number" class="form-control" @bind:event="@UpdateOnText" />
+            </div>
+            <div class="form-group col-8  mb-3">
+                <label class="form-label">Business Registration Number</label>
+                <input type="text" @bind="Invoice.BusinessRegistrationNumber" class="form-control"
+                    @bind:event="@UpdateOnText" />
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <h4>Invoice Itens/Products</h4>
+        <p>Fill the fields below to update the invoice</p>
+        <div class="table-responsive">
+            <table class="table table-sm table-striped">
+                <tr>
+                    <th style="width:80px">#</th>
+                    <th style="width:80px">Sku</th>
+                    <th>Description</th>
+                    <th style="width:80px">Qty.</th>
+                    <th style="width:120px">
+                        Unit Price
+                    </th>
+                    <th style="width:120px">Total</th>
+                    <th style="width:60px;"></th>
+                </tr>
+                @foreach (var item in Invoice.Itens)
+                {
+                    <tr>
+                        <td>@($"{item.ItemOrdem:00}")</td>
+                        <td>
+                            <input type="text" @bind="item.Sku" @bind:event="@UpdateOnText"
+                            class="form-control form-control-sm restore-background" />
+                        </td>
+                        <td>
+                            <input type="text" @bind="item.Description" @bind:event="@UpdateOnText"
+                            class="form-control form-control-sm  restore-background" />
+                        </td>
+                        <td>
+                            <input type="number" @bind="item.Quantity" @bind:event="@UpdateOnText"
+                            class="form-control form-control-sm  restore-background text-center" />
+                        </td>
+                        <td>
+                            <input type="number" @bind="item.UnitPrice" @bind:event="@UpdateOnText"
+                            class="form-control form-control-sm restore-background text-right" />
+                        </td>
+                        <td class="text-nowrap text-right">@item.FormattedTotal</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" @onclick="(() => item.ShouldDelete())">
+                                <i class="oi oi-trash"></i>
+
+                            </button>
+                        </td>
+                    </tr>
+                }
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <button class="btn btn-primary" @onclick="(() => Invoice.AddInvoiceItem())">
+                                <i class="oi oi-plus"></i> Add Item
+                            </button>
+                        </td>
+                        <td colspan="1" class="text-nowrap text-right"
+                            style="font-weight:bold; border-top:1px solid black;">
+                            @Invoice.FormattedPrice
+                        </td>
+                    </tr>
+                </tfoot>
+
+
+            </table>
+        </div>
+    </div>
+    <div class="col-sm-6" style="min-height:550px">
+        <h4>Invoice</h4>
+
+        @{ RenderPdf();}
+        @if (PdfBody.Length == 0)
+        {
+            <div class="d-flex justify-content-center mt-3" style="width: 100%;">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Rendering pdf</span>
+                </div>
+                <div class="h3 ml-2">Rendering pdf...</div>
+            </div>
+
+        }        
+        
+           <canvas id="pdf-canvas"> </canvas>
+    </div>
+</div>

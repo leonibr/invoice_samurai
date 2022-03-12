@@ -1,27 +1,34 @@
 ﻿@page "/"
+<div class="row">
+    <div class="col-12 mb-4">
+        <h3>Choose the invoice generation strategy</h3>
 
-<h3>Choose the invoice generation strategy</h3>
+    </div>
+</div>
 <div class="row">
     <div class="col-6">
-       
-<div class="card" style="width: 18rem;" @onclick="@(GotoApi)">
-  <img src="/images/NET_Core_Logo.svg" class="card-img-top" alt=".net core logo">
-  <div class="card-body">
-    <h5 class="card-title">From WebApi</h5>
-    <p class="card-text">The invoice is rendered on the server (.NET 6) and send the pdf to be rendered on canvas browser</p>
-  </div>
-  
-</div>
+
+        <div class="card" style="width: 18rem;" @onclick="@(GotoApi)">
+            <img src="/images/NET_Core_Logo.svg" class="card-img-top" alt=".net core logo">
+            <div class="card-body">
+                <h5 class="card-title">From WebApi</h5>
+                <p class="card-text">The invoice is rendered on the server (.NET 6) and send the pdf to be rendered on
+                    canvas browser</p>
+            </div>
+
+        </div>
     </div>
     <div class="col-6">
-<div class="card" style="width: 18rem;" @onclick="@(GotoWasm)">
-  <img src="/images/WebAssembly_Logo.svg" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">From Wasm</h5>
-    <p class="card-text">The invoice is going to be rendered using wasm AOT, throught <a href="https://www.questpdf.com/" target="_blank"><code>QuestPDF</code></a> library which uses SkiaSharp under the hood.</p>
-  </div>
+        <div class="card" style="width: 18rem;" @onclick="@(GotoWasm)">
+            <img src="/images/WebAssembly_Logo.svg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">From Wasm</h5>
+                <p class="card-text">The invoice is going to be rendered using wasm AOT, throught <a
+                        href="https://www.questpdf.com/" target="_blank"><code>QuestPDF</code></a> library which uses
+                    SkiaSharp under the hood.</p>
+            </div>
 
-</div>
+        </div>
     </div>
 </div>
 
