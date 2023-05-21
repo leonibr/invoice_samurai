@@ -10,3 +10,8 @@ services:
     environment:
       ASPNETCORE_URLS: "http://+:80"
       ASPNETCORE_ENVIRONMENT: "Production"
+    networks:
+      - my-networks
+networks:
+  my-networks:
+    driver: bridge
