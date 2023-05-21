@@ -1,4 +1,9 @@
-version: '2'
+version: '3.9'
+
+networks:
+  default:
+    driver: bridge
+
 services:
   invoice_samurai:
     restart: always
@@ -10,8 +15,3 @@ services:
     environment:
       ASPNETCORE_URLS: "http://+:80"
       ASPNETCORE_ENVIRONMENT: "Production"
-    networks:
-      - my-networks
-networks:
-  my-networks:
-    driver: bridge
