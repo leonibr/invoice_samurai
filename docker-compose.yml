@@ -2,14 +2,14 @@ version: '2'
 services:
   invoice_samurai:
     restart: always
-    build: 
+    build:
       context: .
       target: invoice_samurai
     ports:
-     - "5087:80"
+      - "5087:80"
     environment:
       ASPNETCORE_URLS: "http://+:80"
       ASPNETCORE_ENVIRONMENT: "Production"
-
-
-
+    networks:
+      - bridge
+      - nginx-proxy
